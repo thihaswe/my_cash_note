@@ -1,14 +1,9 @@
-import { AppInitialState } from "@/types/app";
-import { AppOptions } from "@/types/app";
+import { AppInitialState, AppOptions } from "@/types/app";
 import { config } from "@/utils/config";
-import { Gender, User } from "@prisma/client";
-import { Payload } from "@prisma/client/runtime/library";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { setuid } from "process";
-import user, { setUser } from "./user";
-import { setNote } from "./note";
 import { login, logout } from "./auth";
-import { useRouter } from "next/router";
+import { setNote } from "./note";
+import { setUser } from "./user";
 
 const initialState: AppInitialState = {
   init: false,
