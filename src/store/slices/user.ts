@@ -1,7 +1,9 @@
+import { SignUp } from "@/types/signUp";
 import { UserInitialState } from "@/types/user";
+import { config } from "@/utils/config";
 import { Gender } from "@prisma/client";
-import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { setInfo } from "./forgetPassword";
 
 const initialState: UserInitialState = {
   item: {
@@ -14,6 +16,31 @@ const initialState: UserInitialState = {
   isLoading: false,
   error: null,
 };
+
+export const singUpThunk = createAsyncThunk(
+  "user/signUpThunk",
+  async (options: SignUp, thunkApi) => {
+    const { onSuccess, onError, ...option } = options;
+    try {
+      const respone = await fetch(`${config.apiBaseUrl}/sign-up`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(option),
+      });
+
+      const data = await respone.json();
+
+      if (data === "Bad Request") {
+        thunkApi.dispatch(setInfo(true));
+      } else {
+        thunkApi.dispatch(setUser(data));
+        onSuccess && onSuccess();
+      }
+    } catch (error) {
+      onError && onError();
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",

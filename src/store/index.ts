@@ -2,12 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import appReducer from "../store/slices/app";
 import forgetPasswordReducer from "../store/slices/forgetPassword";
 import userReducer from "../store/slices/user";
+import noteReducer from "../store/slices/note";
+import authReducer from "../store/slices/auth";
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
     forgetPassword: forgetPasswordReducer,
     user: userReducer,
+    note: noteReducer,
+    auth: authReducer,
   },
 });
 

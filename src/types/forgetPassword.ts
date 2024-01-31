@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
+import { BaseOptions } from "./app";
 
-export interface ForgetPassword {
+export interface ForgetPassword extends BaseOptions {
   username: string;
   gender: string;
   dateOfBirth: string;

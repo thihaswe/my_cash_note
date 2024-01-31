@@ -13,6 +13,7 @@ export interface BaseOptions {
 }
 
 export interface AppOptions extends BaseOptions {
-  username: string;
-  password: string;
+  username?: string;
+  password?: string;
+  accessToken?: string;
 }

@@ -5,6 +5,10 @@ import { Gender, User } from "@prisma/client";
 import { Payload } from "@prisma/client/runtime/library";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setuid } from "process";
+import user, { setUser } from "./user";
+import { setNote } from "./note";
+import { login, logout } from "./auth";
+import { useRouter } from "next/router";
 
 const initialState: AppInitialState = {
   init: false,
@@ -31,9 +35,16 @@ export const appSliceThunk = createAsyncThunk(
         thunkApi.dispatch(setUsername(true));
       } else if (data === "Bad Request2") {
         thunkApi.dispatch(setPassword(true));
+      } else if (data === "Unauthorized") {
+        thunkApi.dispatch(logout());
       } else {
+        const { user, notes, token } = data;
+
         thunkApi.dispatch(setUsername(false));
         thunkApi.dispatch(setPassword(false));
+        thunkApi.dispatch(setUser(user));
+        thunkApi.dispatch(setNote(notes));
+        thunkApi.dispatch(login(token));
         onSuccess && onSuccess();
       }
     } catch (error) {}
@@ -50,7 +61,6 @@ const appSlice = createSlice({
     setPassword: (state, action: PayloadAction<boolean>) => {
       state.passwordFalse = action.payload;
     },
-    setUser: (state, action: PayloadAction<User>) => {},
   },
 });
 

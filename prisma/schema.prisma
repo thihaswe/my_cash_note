@@ -11,25 +11,24 @@ datasource db {
 }
 
 model User {
-  id            Int              @id @default(autoincrement())
-  username         String @unique
-  password        String
-  gender  Gender
-  dateOfBirth    String
+  id          Int    @id @default(autoincrement())
+  username    String @unique
+  password    String
+  gender      Gender
+  dateOfBirth String
+  note        Note[]
 }
 
-model Note{
-  id Int @id @default(autoincrement())
-  categoryId  Int
+model Note {
+  id     Int    @id @default(autoincrement())
+  iconId Int
+  date   String
   amount Int
+  userId Int
+  user   User   @relation(fields: [userId], references: [id])
 }
 
-model Category{
-  id Int @id @default(autoincrement())
-  assetUrl String
-}
-
-enum Gender{
+enum Gender {
   male
   female
 }

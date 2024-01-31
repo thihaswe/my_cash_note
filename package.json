@@ -15,12 +15,16 @@
     "@mui/material": "^5.15.2",
     "@prisma/client": "^5.7.1",
     "@reduxjs/toolkit": "^2.0.1",
+    "@types/jsonwebtoken": "^9.0.5",
+    "cookie": "^0.6.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
     "react-redux": "^9.0.4"
   },
   "devDependencies": {
+    "@types/cookie": "^0.6.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -1,8 +1,10 @@
 import LogIn from "@/components/LogIn";
-import { Box, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 
 const Home = () => {
+  //
+
   const router = useRouter();
   return (
     <Box sx={{}}>
@@ -24,6 +26,7 @@ const Home = () => {
         <Box sx={{ width: 300, height: 200 }}>
           <LogIn />
           <button
+            className="button"
             style={{ marginTop: "15px" }}
             onClick={() => {
               router.push("/sign-up");
@@ -32,6 +35,7 @@ const Home = () => {
             sign up
           </button>
         </Box>
+
         <Box sx={{ width: 300, height: 200 }}></Box>
       </Box>
     </Box>

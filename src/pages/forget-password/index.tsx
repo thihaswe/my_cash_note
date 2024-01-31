@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/store/hook";
-import { setUsername } from "@/store/slices/app";
+import { setPassword, setUsername } from "@/store/slices/app";
 import { setInfo } from "@/store/slices/forgetPassword";
 import { setUser } from "@/store/slices/user";
 import { ForgetPassword } from "@/types/forgetPassword";
@@ -15,45 +15,67 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { SourceTextModule } from "vm";
+import { useEffect, useState } from "react";
 
+const defaultValue = {
+  username: "",
+  gender: "",
+  dateOfBirth: "",
+};
 const ForgetPassword = () => {
   const user = useAppSelector((store) => store.user.item);
   const wrongInfo = useAppSelector((store) => store.forgetPassword.wrongInfo);
   const usernameFalse = useAppSelector((store) => store.app.usernameFalse);
+  const passwordFalse = useAppSelector((store) => store.app.passwordFalse);
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const [data, setData] = useState<ForgetPassword>({
-    username: "",
-    gender: "",
-    dateOfBirth: "",
-  });
+  const [data, setData] = useState<ForgetPassword>(defaultValue);
 
-  const handleForget = async () => {
+  useEffect(() => {
+    return () => {
+      dispatch(setInfo(false));
+      dispatch(setPassword(false));
+      dispatch(setUsername(false));
+      setUser({});
+      setData(defaultValue);
+    };
+  }, []);
+
+  const handleForget = async (a: ForgetPassword) => {
+    const { onSuccess, onError, ...forgetData } = a;
     try {
       const response = await fetch(`${config.apiBaseUrl}/forget-password`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(forgetData),
       });
       const responseUser = await response.json();
-      console.log(responseUser);
+
       if (responseUser === "Not Found") {
         dispatch(setInfo(false));
         dispatch(setUser({}));
+        dispatch(setPassword(false));
         dispatch(setUsername(true));
       } else if (responseUser === null) {
         dispatch(setUsername(false));
-
+        dispatch(setPassword(false));
         dispatch(setUser({}));
         dispatch(setInfo(true));
+      } else if (responseUser === "Bad Request Missing Required Fields") {
+        dispatch(setUsername(false));
+        dispatch(setUser({}));
+        dispatch(setInfo(false));
+        dispatch(setPassword(true));
       } else {
+        dispatch(setPassword(false));
         dispatch(setUsername(false));
         dispatch(setInfo(false));
         dispatch(setUser(responseUser));
+        onSuccess && onSuccess();
       }
-    } catch (error) {}
+    } catch (error) {
+      onError && onError();
+    }
   };
   return (
     <Box>
@@ -71,6 +93,7 @@ const ForgetPassword = () => {
         <Box width={500}>
           <InputLabel>UerName</InputLabel>
           <TextField
+            value={data.username}
             autoFocus
             type="text"
             onChange={(e) => {
@@ -97,6 +120,7 @@ const ForgetPassword = () => {
           <br />
           <InputLabel>Date of birth</InputLabel>
           <Input
+            value={data.dateOfBirth}
             type="date"
             onChange={(e) => {
               setData({ ...data, dateOfBirth: e.target.value });
@@ -112,7 +136,12 @@ const ForgetPassword = () => {
             </Button>
             <Button
               onClick={() => {
-                handleForget();
+                handleForget({
+                  ...data,
+                  onSuccess: () => {
+                    setData(defaultValue);
+                  },
+                });
               }}
               variant="contained"
             >
@@ -131,7 +160,15 @@ const ForgetPassword = () => {
                     your information is wrong
                   </Typography>
                 ) : (
-                  <></>
+                  <>
+                    {passwordFalse ? (
+                      <Typography sx={{ mt: 15 }}>
+                        Missing required fields
+                      </Typography>
+                    ) : (
+                      <></>
+                    )}
+                  </>
                 )}
               </>
             )}

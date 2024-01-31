@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/store/hook";
-import { appSliceThunk } from "@/store/slices/app";
+import { appSliceThunk, setPassword, setUsername } from "@/store/slices/app";
 import { AppOptions } from "@/types/app";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Box, IconButton } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const defaultValue = {
   username: "",
@@ -19,6 +19,13 @@ const LogIn = () => {
 
   const [data, setData] = useState<AppOptions>(defaultValue);
   const [visible, setVisible] = useState<boolean>(false);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setUsername(false));
+      dispatch(setPassword(false));
+    };
+  }, []);
   const handleOnChange = () => {
     dispatch(
       appSliceThunk({
@@ -29,6 +36,7 @@ const LogIn = () => {
       })
     );
   };
+
   return (
     <Box>
       <label htmlFor="username">UserName</label>
@@ -59,7 +67,7 @@ const LogIn = () => {
         <input
           id="password"
           defaultValue={data.password}
-          type={visible ? "text" : "passwordj"}
+          type={visible ? "text" : "password"}
           maxLength={15}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             setData({ ...data, password: e.target.value });
@@ -78,7 +86,7 @@ const LogIn = () => {
       <button
         className="button"
         onClick={handleOnChange}
-        disabled={!(data.username.length > 0 && data.password.length > 0)}
+        disabled={!(data.username?.length !== 0 && data.password?.length !== 0)}
       >
         <span> LogIn</span>
       </button>
