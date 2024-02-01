@@ -53,7 +53,9 @@ const NotePage = () => {
   };
   const formattedDate = formatMonth(month, year);
 
-  const notesFiltered = notes.filter((item) => item.date >= date);
+  const notesFiltered = notes.filter((item) =>
+    date === "" ? item.date : item.date.slice(0, 7) === date.slice(0, 7)
+  );
 
   const sortedNotes = [...notesFiltered].sort((a, b) =>
     b.date.localeCompare(a.date)
