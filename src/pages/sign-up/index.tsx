@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hook";
 import { setInfo } from "@/store/slices/forgetPassword";
 import { singUpThunk } from "@/store/slices/user";
 import { SignUp } from "@/types/signUp";
-import { FlagRounded } from "@mui/icons-material";
+import { CenterFocusStrong, FlagRounded } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -50,7 +50,10 @@ const SignUP = () => {
     );
   };
   return (
-    <Box>
+    <Box sx={{ mt: 5 }}>
+      <Typography sx={{ textAlign: "center" }} variant="h5">
+        Sign up for cash note
+      </Typography>
       <Box sx={{ maxWidth: 500, margin: "0 auto" }}>
         <Box>
           <InputLabel>Username</InputLabel>

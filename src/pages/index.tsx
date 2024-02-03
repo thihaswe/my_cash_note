@@ -14,15 +14,24 @@ const Home = () => {
         <Box
           sx={{
             height: 200,
-
             display: "flex",
             alignItems: "center",
           }}
         >
-          <Typography variant="h3" sx={{}}>
-            My Cash Note
-          </Typography>
+          <Typography variant="h3">My Cash Note</Typography>
         </Box>
+        <Typography
+          variant="h5"
+          sx={{
+            mb: 3,
+            borderRadius: 3,
+            border: "1px solid red",
+            p: 3,
+            color: "red",
+          }}
+        >
+          you can use but don't waste
+        </Typography>
         <Box sx={{ width: 300, height: 200 }}>
           <LogIn />
           <button
