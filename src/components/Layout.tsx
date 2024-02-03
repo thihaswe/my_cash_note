@@ -60,7 +60,7 @@ const Layout = ({ children }: Prop) => {
               color: "red",
             }}
           >
-            you can use but don't waste
+            {`you can use but don't waste`}
           </Typography>
           <Button
             onClick={() => {

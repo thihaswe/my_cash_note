@@ -30,7 +30,7 @@ const Home = () => {
             color: "red",
           }}
         >
-          you can use but don't waste
+          {`   you can use but don't waste`}
         </Typography>
         <Box sx={{ width: 300, height: 200 }}>
           <LogIn />
