@@ -17,6 +17,8 @@ const Layout = ({ children }: Prop) => {
   const dispatch = useAppDispatch();
   const logInOrNot = useAppSelector((store) => store.auth.isAuthenticated);
   const [open, setOpen] = useState(false);
+
+  console.log("log in or not ", logInOrNot);
   useEffect(() => {
     if (logInOrNot) {
       const accessToken = getCookieValue("token");
